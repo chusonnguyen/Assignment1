@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Assignment 1</string>
+    <string name="action_settings">Reset</string>
+    <string name="title_placeholder">Title</string>
+    <string name="app_insert">Insert</string>
+    <string name="action_change_layout">layout</string>
+    <string name="action_change_layout_linear">linear</string>
+    <string name="action_change_layout_grid">grid</string>
+    <string name="title">Title</string>
+    <string name="detail">Detail</string>
+</resources>

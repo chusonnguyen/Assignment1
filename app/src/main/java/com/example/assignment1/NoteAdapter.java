@@ -42,12 +42,12 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             case 0:
                 View mItemView1 = mInflater.inflate(R.layout.note_item1,
                         parent, false);
-                // mItemView1.setOnClickListener(FirstFragment.myOnClickListener);
+                mItemView1.setOnClickListener(MainActivity.myOnClickListener);
                 return new NoteViewHolder1(mItemView1, this);
             case 1:
                 View mItemView2 = mInflater.inflate(R.layout.note_item2,
                     parent, false);
-                // mItemView2.setOnClickListener(FirstFragment.myOnClickListener);
+                mItemView2.setOnClickListener(MainActivity.myOnClickListener);
                 return new NoteViewHolder2(mItemView2, this);
             default:
                 return null;
@@ -103,4 +103,5 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             this.mAdapter = mAdapter;
         }
     }
+
 }

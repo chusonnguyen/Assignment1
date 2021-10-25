@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar mToolBar = (Toolbar) findViewById(R.id.my_toolbar1);
         setSupportActionBar(mToolBar);
 
+        myOnClickListener = new MyOnClickListener(getApplicationContext());
 
         for (int i = 0; i < NoteData.titleArray.length; i++) {
             Random r = new Random();
@@ -138,6 +140,21 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class MyOnClickListener implements View.OnClickListener{
+
+        private final Context context;
+
+        private MyOnClickListener(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void onClick(View v) {
+            int selectedPosition =mRecyclerView.getChildPosition(v);
+            Toast.makeText(context, "Item in position" + selectedPosition, Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

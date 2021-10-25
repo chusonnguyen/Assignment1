@@ -61,7 +61,7 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 NoteModule currentPosition = mNoteList.get(position);
                 if (holder instanceof NoteViewHolder1){
                     ((NoteViewHolder1)holder).titleView.setText(currentPosition.getTitle());
-                    Glide.with(mContext).load(currentPosition.getImageSource()).into(((NoteViewHolder1)holder).imageView);
+                    ((NoteViewHolder1)holder).imageView.setImageBitmap(currentPosition.getImageSource());
                 }
                 break;
 

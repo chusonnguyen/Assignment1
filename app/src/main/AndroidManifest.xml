@@ -8,12 +8,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Assignment1"
-        >
+        android:theme="@style/Theme.Assignment1">
+        <activity
+            android:name=".EditNoteActivity"
+            android:theme="@style/Theme.Assignment1.NoActionBar"></activity>
         <activity
             android:name=".AddNoteActivity"
             android:label="@string/app_insert"
-            android:theme="@style/Theme.Assignment1.NoActionBar"/>
+            android:theme="@style/Theme.Assignment1.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

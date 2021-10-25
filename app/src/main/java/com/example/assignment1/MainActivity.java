@@ -26,7 +26,9 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Random;
@@ -52,17 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         myOnClickListener = new MyOnClickListener(getApplicationContext());
 
-        for (int i = 0; i < NoteData.titleArray.length; i++) {
-            Random r = new Random();
-            int randomNum = r.nextInt(NoteData.imageArray.length - 1);
-            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), NoteData.imageArray[randomNum]);
-            mNoteList.add(new NoteModule(
-                    NoteData.titleArray[i],
-                    NoteData.detailArray[i],
-                    bitmap,
-                    NoteData.image[i]
-            ));
-        }
+        initializeData();
+
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview);
         mAdapter = new NoteAdapter(this, mNoteList);
         mRecyclerView.setAdapter(mAdapter);
@@ -93,9 +86,21 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(getApplicationContext().openFileInput("myImage"));
                         NoteModule newNote = bunlde.getParcelable("note");
-                        newNote.setImageSource(bitmap);
+                        if (newNote.getImageCheck() == true) { newNote.setImageSource(bitmap); }
                         mNoteList.add(newNote);
                         mAdapter.notifyDataSetChanged();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case VIEW_UPDATE:
+                Log.d("View_update", "whyyyyyy");
+                if (resultCode == RESULT_OK) {
+                    Bundle bunlde = data.getExtras();
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(getApplicationContext().openFileInput("myImage"));
+                        mNoteList.get(bunlde.getInt("returnPosition")).setImageSource(bitmap);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -114,18 +119,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_settings:
-                mNoteList.clear();;
-                for (int i = 0; i < NoteData.titleArray.length; i++) {
-                    Random r = new Random();
-                    int randomNum = r.nextInt(NoteData.imageArray.length - 1);
-                    Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), NoteData.imageArray[randomNum]);
-                    mNoteList.add(new NoteModule(
-                            NoteData.titleArray[i],
-                            NoteData.detailArray[i],
-                            bitmap,
-                            NoteData.image[i]
-                    ));
-                }
+                mNoteList.clear();
+                initializeData();
                 mAdapter.notifyDataSetChanged();
                 break;
             case R.id.action_layout:
@@ -153,7 +148,61 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             int selectedPosition =mRecyclerView.getChildPosition(v);
-            Toast.makeText(context, "Item in position" + selectedPosition, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Item in position" + selectedPosition, Toast.LENGTH_SHORT).show();
+            NoteModule editNote = mNoteList.get(selectedPosition);
+            if (editNote.getImageCheck() == true){
+                createImageFromBitmap(editNote.getImageSource());
+                editNote.setImageSource(null);
+                Intent intent = new Intent(MainActivity.this, EditNoteActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", selectedPosition);
+                bundle.putParcelable("note", editNote);
+                intent.putExtras(bundle);
+                startActivityForResult(intent, VIEW_UPDATE);
+            } else {
+                Intent intent = new Intent(MainActivity.this, EditNoteActivity.class);
+                intent.putExtra("note", editNote);
+                startActivityForResult(intent, VIEW_UPDATE);
+            }
+        }
+    }
+
+    public String createImageFromBitmap(Bitmap bitmap) {
+        String fileName = "myImage";//no .png or .jpg needed
+        try {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            fileName = null;
+        }
+        return fileName;
+    }
+
+    public void initializeData(){
+        Log.e("initialize", "initila");
+        for (int i = 0; i < NoteData.titleArray.length; i++) {
+            Random r = new Random();
+            int randomNum = r.nextInt(NoteData.imageArray.length - 1);
+            Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), NoteData.imageArray[randomNum]);
+            if (NoteData.image[i] == true){
+                mNoteList.add(new NoteModule(
+                        NoteData.titleArray[i],
+                        NoteData.detailArray[i],
+                        bitmap,
+                        NoteData.image[i]
+                ));
+            } else {
+                mNoteList.add(new NoteModule(
+                        NoteData.titleArray[i],
+                        NoteData.detailArray[i],
+                        null,
+                        NoteData.image[i]
+                ));
+            }
         }
     }
 

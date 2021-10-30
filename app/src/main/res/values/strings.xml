@@ -8,4 +8,5 @@
     <string name="action_change_layout_grid">grid</string>
     <string name="title">Title</string>
     <string name="detail">Detail</string>
+    <string name="edit_finish">Finish</string>
 </resources>

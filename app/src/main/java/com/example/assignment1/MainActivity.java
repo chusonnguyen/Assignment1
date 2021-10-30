@@ -95,12 +95,23 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case VIEW_UPDATE:
-                Log.d("View_update", "whyyyyyy");
-                if (resultCode == RESULT_OK) {
-                    Bundle bunlde = data.getExtras();
+                if (resultCode == RESULT_CANCELED) {
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(getApplicationContext().openFileInput("myImage"));
-                        mNoteList.get(bunlde.getInt("returnPosition")).setImageSource(bitmap);
+                        mNoteList.get(data.getIntExtra("returnPosition", 0)).setImageSource(bitmap);
+                        mAdapter.notifyDataSetChanged();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Bundle bundle = data.getExtras();
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(getApplicationContext().openFileInput("myImage"));
+                        Integer notePosition = bundle.getInt("returnPosition");
+                        NoteModule newNote = bundle.getParcelable("returnNote");
+                        newNote.setImageSource(bitmap);
+                        mNoteList.set(notePosition, newNote);
+                        mAdapter.notifyDataSetChanged();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -160,8 +171,12 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtras(bundle);
                 startActivityForResult(intent, VIEW_UPDATE);
             } else {
+                editNote.setImageSource(null);
                 Intent intent = new Intent(MainActivity.this, EditNoteActivity.class);
-                intent.putExtra("note", editNote);
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", selectedPosition);
+                bundle.putParcelable("note", editNote);
+                intent.putExtras(bundle);
                 startActivityForResult(intent, VIEW_UPDATE);
             }
         }

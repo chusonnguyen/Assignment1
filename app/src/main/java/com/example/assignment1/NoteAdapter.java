@@ -1,16 +1,20 @@
 package com.example.assignment1;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.LinkedList;
 
@@ -62,6 +66,27 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 if (holder instanceof NoteViewHolder1){
                     ((NoteViewHolder1)holder).titleView.setText(currentPosition.getTitle());
                     ((NoteViewHolder1)holder).imageView.setImageBitmap(currentPosition.getImageSource());
+                    ((NoteViewHolder1)holder).button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                            builder.setMessage("Do you want to delete this note")
+                                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            mNoteList.remove(position);
+                                            ((NoteViewHolder1)holder).mAdapter.notifyDataSetChanged();
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    });
                 }
                 break;
 
@@ -70,6 +95,27 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 if (holder instanceof NoteViewHolder2){
                     ((NoteViewHolder2)holder).nameView.setText(currentPosition1.getTitle());
                     ((NoteViewHolder2)holder).detailView.setText(currentPosition1.getDetail());
+                    ((NoteViewHolder2)holder).button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                            builder.setMessage("Do you want to delete this note")
+                                    .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            mNoteList.remove(position);
+                                            ((NoteViewHolder2)holder).mAdapter.notifyDataSetChanged();
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    });
                 }
                 break;
         }
@@ -84,22 +130,26 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     class NoteViewHolder1 extends RecyclerView.ViewHolder {
         public final TextView titleView;
         public final ImageView imageView;
+        public final MaterialButton button;
         final NoteAdapter mAdapter;
         public NoteViewHolder1(View itemView, NoteAdapter mAdapter) {
             super(itemView);
             titleView = itemView.findViewById(R.id.title);
             imageView = itemView.findViewById(R.id.sportsImage);
+            button = itemView.findViewById(R.id.delete1);
             this.mAdapter = mAdapter;
         }
     }
     class NoteViewHolder2 extends RecyclerView.ViewHolder {
         public final TextView nameView;
         public final TextView detailView;
+        public final MaterialButton button;
         final NoteAdapter mAdapter;
         public NoteViewHolder2(View itemView, NoteAdapter mAdapter) {
             super(itemView);
             nameView = itemView.findViewById(R.id.name);
             detailView = itemView.findViewById(R.id.description);
+            button = itemView.findViewById(R.id.delete2);
             this.mAdapter = mAdapter;
         }
     }

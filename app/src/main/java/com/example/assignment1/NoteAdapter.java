@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,12 +24,17 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private final LinkedList<NoteModule> mNoteList;
     private LayoutInflater mInflater;
     private Context mContext;
+    private boolean hideDelete;
 
     public NoteAdapter(Context context, LinkedList<NoteModule> mNoteList) {
         mInflater = LayoutInflater.from(context);
         this.mNoteList = mNoteList;
         this.mContext = context;
+        this.hideDelete = true;
     }
+
+    public void setHideDelete(boolean hide){this.hideDelete = hide;}
+
     @Override
     public int getItemViewType(int position) {
         if (mNoteList.get(position).getImageCheck() == true){
@@ -64,6 +70,11 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             case 0:
                 NoteModule currentPosition = mNoteList.get(position);
                 if (holder instanceof NoteViewHolder1){
+                    if (hideDelete == true) {
+                        ((NoteViewHolder1) holder).deleteLayout.setVisibility(View.GONE);
+                    } else {
+                        ((NoteViewHolder1) holder).deleteLayout.setVisibility(View.VISIBLE);
+                    }
                     ((NoteViewHolder1)holder).titleView.setText(currentPosition.getTitle());
                     ((NoteViewHolder1)holder).imageView.setImageBitmap(currentPosition.getImageSource());
                     ((NoteViewHolder1)holder).button.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +104,11 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             case 1:
                 NoteModule currentPosition1 = mNoteList.get(position);
                 if (holder instanceof NoteViewHolder2){
+                    if (hideDelete == true) {
+                        ((NoteViewHolder2) holder).deleteLayout.setVisibility(View.GONE);
+                    } else {
+                        ((NoteViewHolder2) holder).deleteLayout.setVisibility(View.VISIBLE);
+                    }
                     ((NoteViewHolder2)holder).nameView.setText(currentPosition1.getTitle());
                     ((NoteViewHolder2)holder).detailView.setText(currentPosition1.getDetail());
                     ((NoteViewHolder2)holder).button.setOnClickListener(new View.OnClickListener() {
@@ -131,12 +147,14 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         public final TextView titleView;
         public final ImageView imageView;
         public final MaterialButton button;
+        public LinearLayout deleteLayout;
         final NoteAdapter mAdapter;
         public NoteViewHolder1(View itemView, NoteAdapter mAdapter) {
             super(itemView);
             titleView = itemView.findViewById(R.id.title);
             imageView = itemView.findViewById(R.id.sportsImage);
             button = itemView.findViewById(R.id.delete1);
+            deleteLayout = itemView.findViewById(R.id.card_delete1);
             this.mAdapter = mAdapter;
         }
     }
@@ -144,12 +162,14 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         public final TextView nameView;
         public final TextView detailView;
         public final MaterialButton button;
+        public LinearLayout deleteLayout;
         final NoteAdapter mAdapter;
         public NoteViewHolder2(View itemView, NoteAdapter mAdapter) {
             super(itemView);
             nameView = itemView.findViewById(R.id.name);
             detailView = itemView.findViewById(R.id.description);
             button = itemView.findViewById(R.id.delete2);
+            deleteLayout = itemView.findViewById(R.id.card_delete2);
             this.mAdapter = mAdapter;
         }
     }

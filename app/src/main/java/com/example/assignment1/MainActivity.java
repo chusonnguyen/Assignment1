@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private NoteAdapter mAdapter;
     static View.OnClickListener myOnClickListener;
     private StaggeredGridLayoutManager mGridLayoutManager;
+    public boolean hideDelete = true;
 
     private final int INSERT = 1;
     private final int VIEW_UPDATE = 0;
@@ -143,6 +144,20 @@ public class MainActivity extends AppCompatActivity {
                     mRecyclerView.setLayoutManager(mGridLayoutManager);
                     item.setIcon(R.drawable.ic_grid);
                 }
+                break;
+            case R.id.action_delete:
+                if(hideDelete == true){
+                    item.setTitle("Finish");
+                    hideDelete = false;
+                    mAdapter.setHideDelete(hideDelete);
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    item.setTitle("Delete");
+                    hideDelete = true;
+                    mAdapter.setHideDelete(hideDelete);
+                    mAdapter.notifyDataSetChanged();
+                }
+
                 break;
         }
         return super.onOptionsItemSelected(item);

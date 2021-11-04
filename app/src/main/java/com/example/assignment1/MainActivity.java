@@ -1,15 +1,5 @@
 package com.example.assignment1;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,12 +7,16 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -30,7 +24,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -71,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this , AddNoteActivity.class);
                 startActivityForResult(intent, INSERT);
 
-                //Toast.makeText(MainActivity.this, "Fab test", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -175,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             int selectedPosition =mRecyclerView.getChildPosition(v);
-            //Toast.makeText(context, "Item in position" + selectedPosition, Toast.LENGTH_SHORT).show();
             NoteModule editNote = mNoteList.get(selectedPosition);
             if (editNote.getImageCheck() == true){
                 createImageFromBitmap(editNote.getImageSource());
@@ -214,7 +205,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initializeData(){
-        Log.e("initialize", "initila");
         for (int i = 0; i < NoteData.titleArray.length; i++) {
             Random r = new Random();
             int randomNum = r.nextInt(NoteData.imageArray.length - 1);

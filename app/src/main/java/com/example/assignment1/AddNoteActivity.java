@@ -30,7 +30,6 @@ public class AddNoteActivity extends AppCompatActivity {
     EditText detail, title;
     ImageView img;
     Bitmap bitmap;
-    byte[] byteArray;
     Boolean imgCheck = false;
 
     static final int SELECT_PICTURE = 200;

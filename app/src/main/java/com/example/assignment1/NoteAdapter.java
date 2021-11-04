@@ -3,6 +3,11 @@ package com.example.assignment1;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -70,11 +76,7 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             case 0:
                 NoteModule currentPosition = mNoteList.get(position);
                 if (holder instanceof NoteViewHolder1){
-                    if (hideDelete == true) {
-                        ((NoteViewHolder1) holder).deleteLayout.setVisibility(View.GONE);
-                    } else {
-                        ((NoteViewHolder1) holder).deleteLayout.setVisibility(View.VISIBLE);
-                    }
+                    ((NoteViewHolder1) holder).deleteLayout.setVisibility(hideDelete ? View.GONE : View.VISIBLE);
                     ((NoteViewHolder1)holder).titleView.setText(currentPosition.getTitle());
                     ((NoteViewHolder1)holder).imageView.setImageBitmap(currentPosition.getImageSource());
                     ((NoteViewHolder1)holder).button.setOnClickListener(new View.OnClickListener() {
@@ -104,11 +106,7 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             case 1:
                 NoteModule currentPosition1 = mNoteList.get(position);
                 if (holder instanceof NoteViewHolder2){
-                    if (hideDelete == true) {
-                        ((NoteViewHolder2) holder).deleteLayout.setVisibility(View.GONE);
-                    } else {
-                        ((NoteViewHolder2) holder).deleteLayout.setVisibility(View.VISIBLE);
-                    }
+                    ((NoteViewHolder2) holder).deleteLayout.setVisibility(hideDelete ? View.GONE : View.VISIBLE);
                     ((NoteViewHolder2)holder).nameView.setText(currentPosition1.getTitle());
                     ((NoteViewHolder2)holder).detailView.setText(currentPosition1.getDetail());
                     ((NoteViewHolder2)holder).button.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +145,7 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         public final TextView titleView;
         public final ImageView imageView;
         public final MaterialButton button;
-        public LinearLayout deleteLayout;
+        public View deleteLayout;
         final NoteAdapter mAdapter;
         public NoteViewHolder1(View itemView, NoteAdapter mAdapter) {
             super(itemView);
@@ -162,7 +160,7 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         public final TextView nameView;
         public final TextView detailView;
         public final MaterialButton button;
-        public LinearLayout deleteLayout;
+        public View deleteLayout;
         final NoteAdapter mAdapter;
         public NoteViewHolder2(View itemView, NoteAdapter mAdapter) {
             super(itemView);

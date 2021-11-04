@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this , AddNoteActivity.class);
                 startActivityForResult(intent, INSERT);
+
                 //Toast.makeText(MainActivity.this, "Fab test", Toast.LENGTH_SHORT).show();
             }
         });
